@@ -1,0 +1,17 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+float age;
+cout<<"Please enter your age : "<<endl;
+cin>>age;
+if(age>=18)
+{
+cout<<"You are eligible to cast your vote, use it wisely!"<<endl;
+}
+else
+{
+cout<<"Sorry you have to wait for another " <<18.0-age <<" years to cast your first vote"<<endl<<" You are not eligible to cast a vote"<<endl;
+}
+return 0;
+}
