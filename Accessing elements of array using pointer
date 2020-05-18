@@ -1,0 +1,24 @@
+#include<iostream>
+using namespace std;
+int print(int *a);
+int main()
+{
+	int a[5],i;
+	int *p=a;
+	cout<<"Enter elements : "<<endl;
+	for(i=0;i<5;i++)
+	{
+		cin>>a[i];
+	}
+	cout<<"You entered: "<<endl;
+	print(p);
+	return 0;
+}
+int print(int *a)
+{
+	int j;
+	for(j=0;j<5;j++)
+	{
+		cout<<a[j]<<endl;
+	}
+}
