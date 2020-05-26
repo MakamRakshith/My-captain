@@ -1,0 +1,44 @@
+#include<iostream>
+using namespace std;
+//Initialisation of class
+class time_conversion{
+	private:      //Access specifier
+	int hr;        //data members
+	int min;
+	int sec;
+	public:
+		//Function for entering the amount of time
+	enter_details();     //Member function
+	//Function for converting entered time to seconds
+	int time_convert()
+	{
+		int i,sum=0;
+		sum=(3600*hr)+(60*min)+sec;
+		return sum;		
+	}
+
+};
+
+time_conversion :: enter_details()
+	{
+		cout<<"Enter time: ";
+		cout<<"\nHours? ";
+		cin>>hr;
+		cout<<"\nMinutes? ";
+		cin>>min;
+		cout<<"\nSeconds? ";
+		cin>>sec;
+		cout<<"The time is = "<<hr<<":"<<min<<":"<<sec;
+	}
+
+
+int main()
+{
+	int result;
+	time_conversion s1;
+	s1.enter_details();
+	//the converted time in seconds is assigned to result
+	result=s1.time_convert();
+	//Displaying result
+	cout<<"\nThe time in seconds is : "<<result;
+}
