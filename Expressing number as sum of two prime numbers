@@ -1,0 +1,55 @@
+// Hello sir, My program is taking a lot of time for execution, the result is as expected but it is taking long
+// Can you please help me out with it
+
+#include<iostream>
+using namespace std;
+//Function to check prime number
+int check_prime(int a)
+{
+	int i;
+	for(i=2;a%i!=0;i++);
+	if(i==a)
+	return a;
+	
+}
+int main()
+{
+	int a,b,i,j,n,m=0,x=0,p,q,r,s;
+	cout<<"Enter a positive integer: "<<endl;
+	//Inputting number
+	cin>>n;
+	int arr[n];
+	//Initialisation of array
+	for(r=0,s=0;r<n;r++,s++)
+	{
+		arr[r]=s;
+	}
+	
+	//Main part of the program
+	for(m=0;m<n;m++)
+	{
+		//This piece of code is used to check if the first number is prime
+		//check_prime function is called
+		p=check_prime(arr[m]);
+		if(p==arr[m])
+		{
+		
+		for(x=0;x<n;x++)
+		{
+				//This piece of code is used to check if the second number is prime
+			q=check_prime(arr[x]);
+		if(q==arr[x])
+		{
+			
+			//Condition of the question
+			if(p+q==n)
+			{
+				//Output
+				cout<<n<<"="<<p<<"+"<<q<<endl;
+			}
+		}
+	}
+	
+}
+}
+}
