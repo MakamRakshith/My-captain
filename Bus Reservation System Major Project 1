@@ -1,0 +1,258 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<conio.h>
+#include<string.h>
+
+using namespace std;
+
+static int p=0;
+
+class a             //Defining Class
+{
+	public:       //Access specifier
+	char from[20], to[20], day[20], driver[10], depart[10], arrival[10], busn[5], seat[8][4][10];   //Data Members
+	
+		void updatebus();         //Member functions
+		void reserve();
+		void empty();
+		void availability();
+		void show();
+		void position(int n);
+}bus[10];         //This lines indicates the number of buses
+
+
+//This function is used to print a character so that it divides the page
+void line(char ch)
+{
+	for(int i=80;i>0;i--)
+	{
+		cout <<ch;
+	}
+}
+
+
+//This function is used to Update the information of the bus for futher reservation
+// :: is called scope resolution operator
+void a::updatebus()
+{
+	cout << "\nEnter Bus No: ";
+	cin >> bus[p].busn;
+	cout << "\nEnter Driver's name: ";
+	cin >> bus[p].driver;
+	cout << "\nEnter From Station: ";
+	cin >> bus[p].from;
+	cout << "\nEnter Destination: ";
+	cin >> bus[p].to;
+	cout << "\nEnter Arrival Time: ";
+	cin >> bus[p].arrival;
+	cout << "\nEnter Departure Time: ";
+	cin >> bus[p].depart;
+	cout << "\nEnter Day on which Bus is Available: ";
+	cin >> bus[p].day;
+	//This line calls the empty() function on line 112
+	bus[p].empty();
+	p++;
+}
+
+
+//This function is used for reservation 
+void a::reserve()
+ {
+ 	int n,seat;
+ 	char from[20], to[20], day[20];
+ 	top:
+ 	cout << "\n\tEnter From place: ";
+ 	cin >> from;
+ 	cout << "\n\tEnter Destination: ";
+ 	cin >> to;
+ 	cout << "\n\tEnter the day on which you travelling: ";
+ 	cin >> day;
+    for(n=0;n<p;n++)
+    {
+    	//This piece of code checks if the input by user matches with any of the buses available
+    	if (strcmp(from,bus[n].from)==0&&strcmp(to,bus[n].to)==0&&strcmp(day,bus[n].day)==0)
+    	{
+		
+			cout << "\n\tBus number: "<<bus[n].busn<<" is available for you\n";
+			while (n<=p)
+			{
+				cout << "\n\tEnter the seat Number : ";
+				cin >> seat;
+				if (seat>32)
+				{
+					cout << "\nThere are only 32 seats available in the bus. Please Enter the correct seat number";
+				}
+				else
+				{
+					//When empty() function was called in the function updatebus(), it had assigned "Empty" to all seats
+					// So the next line checks if the seat is empty or is it reserved for someone else
+					if (strcmp(bus[n].seat[seat/4][(seat%4)-1],"Empty")==0)
+					{
+						cout << "\n\nEnter passesnger's name: ";
+						cin >> bus[n].seat[seat/4][(seat%4)-1];
+						break;
+					}
+					else    //This else is executed if the seat is already booked by someone
+					cout << "\nThe seat number is already reserved.\n";
+				}
+			}
+		}
+		else if (strcmp(day,bus[n].day)!=0)  
+		{
+			cout << "\nThere are no buses available on this day, Sorry!\n";
+			goto top;
+		}
+		else
+		{
+			cout << "\nThere are no buses available on this route, Sorry!\n";
+			goto top;
+		}
+	}
+}
+ 
+ 
+ //This function is used to assign "Empty" to all the seats available on the bus
+void a::empty()
+ {
+ 	for(int i=0;i<8;i++)
+	{
+ 		for(int j=0;j<4;j++)
+ 		{
+ 			strcpy(bus[p].seat[i][j],"Empty");
+		}
+	}
+ }
+
+
+//This function is used to see the list of all buses available 
+void a :: availability()
+{
+	cout << "These are the buses Available\n";
+	for(int n=0;n<p;n++)
+	{
+		line('*');    // Line function is called present on line 26
+		cout << "Bus no: \t"<<bus[n].busn
+		<<"\nDriver name: \t"<<bus[n].driver<<"\t\tArrival Time: \t"
+		<<bus[n].arrival<<"\tDepature time: "<<bus[n].depart
+		<<"\nFrom: \t\t"<<bus[n].from<<"\t\tTo: \t\t"<<
+		bus[n].to<<"\nDay on which it is available: \t\t"<<bus[n].day<<"\n";
+		line('*');
+		cout <<  "\n";
+	}
+}
+
+
+void a::show()
+ {
+ 	int n;
+ 	char number[5];
+ 	cout << "Enter the bus no allocated to you during reservation: ";
+ 	cin >> number;
+ 	for(n=0;n<=p;n++)
+ 	{
+ 		//This piece of code is used for comparing the entered bus number by user and the available buses
+ 		if (strcmp(bus[n].busn,number)==0)
+ 		break;
+	}
+	while (n<=p) 
+	{
+		line('*');
+		cout << "Bus no: \t"<<bus[n].busn
+		<<"\ndriver: \t"<<bus[n].driver<<"\t\tArrival Time: \t"
+		<<bus[n].arrival<<"\tDepature time: "<<bus[n].depart
+		<<"\nFrom: \t\t"<<bus[n].from<<"\t\tTo: \t\t\n"<<
+		bus[n].to<<"\nDay: \t\t"<<bus[n].day<<"\n";
+		line('*');
+		bus[0].position(n);   //Position() function called on line 193
+		int a=1;
+		for(int i=0;i<8;i++)
+		{
+			for(int j=0;j<4;j++)
+			{
+				a++;
+				//This line of code is used to check if the seats are empty or reserved
+				//Every time during the loop the if statement checks if the seat is not empty, if so then it will
+				// print the passenger's name. The integer a keeps track of seat number
+				if (strcmp(bus[n].seat[i][j],"Empty")!=0)
+				cout << "\nThe seat number "<<(a-1)<<" is reserved for "<<bus[n].seat[i][j]<<".";
+			}
+		}
+		break;
+	}
+	if (n>p)
+	cout << "Enter correct bus no: ";
+	
+}
+
+
+//This function is used for printing the list of passengers with proper spacing 
+void a::position(int l)
+{
+	int s=0,p=0;     // s is to print seat number; p is used to print number of empty seats
+	for(int i=0;i<8;i++)
+	{
+		cout << "\n";
+		for(int j=0;j<4;j++)
+		{
+			s++;
+			if (strcmp(bus[l].seat[i][j],"Empty")==0)
+			{
+				//This is used for spacing
+				cout.width(5);
+				//This is used to fill the spaced place in width call; both width and fill go together
+				cout.fill(' ');
+				cout <<s<<".";
+				cout.width(10);
+				cout.fill(' ');
+				cout <<bus[l].seat[i][j];  //If this condition is true then "Empty" is printed
+				p++;
+			}
+			else
+			{
+				//This is used for spacing
+				cout.width(5);
+				//This is used to fill the spaced place in width call; both width and fill go together
+				cout.fill(' ');
+				cout <<s<<".";
+				cout.width(10);
+				cout.fill(' ');
+				cout <<bus[l].seat[i][j];  //If the else part is true then passenger's name is printed
+			}
+		}
+	}
+	cout <<"\n\nThere are "<<p<<" seats empty in Bus no: "<<bus[l].busn;
+}
+
+
+//Main Function starts here
+int main()
+{
+	int choice;
+	cout<<"\n\t\tWELCOME TO SOUTH ZONE BUS RESERVATION PORTAL";
+	while(2)
+	{
+	cout << "\n\n\n\t\t\t1. Update Bus Info";
+	cout << "\n\n\n\t\t\t2. Book Ticket";
+	cout << "\n\n\n\t\t\t3. Check For Availability";
+	cout << "\n\n\n\t\t\t4. Show Buses information";
+	cout << "\n\n\n\t\t\t5. Exit";
+	cout << "\n\n\n\t\t\tEnter your choice: ";
+	cin >> choice;
+	switch(choice)
+		{
+			case 1: bus[p].updatebus();
+				break;
+			case 2: bus[p].reserve();
+				break;
+			case 3: bus[p].availability();
+				break;
+			case 4: bus[p].show();
+				break;
+			case 5: cout<<"\n\nTHANK YOU FOR YOUR TRANSACTION";
+					exit(0);
+			
+		}
+	}
+	return 0;
+}
